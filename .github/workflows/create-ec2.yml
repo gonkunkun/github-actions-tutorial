@@ -27,6 +27,9 @@ jobs:
     - name: check val
       run: echo ${{github.event_name}}
 
+    - name: check val
+      run: echo ${{github.ref}}
+
     - name: Terraform Plan
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color
