@@ -4,6 +4,8 @@ on:
   push:
     branches:
      - "main"
+  pull_request:
+    types: [opened]
 
 jobs:
   terraform:
@@ -34,6 +36,26 @@ jobs:
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color
 
+    - uses: actions/github-script@3
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = '#### Terraform Validation \`${{ steps.validate.outcome }}\`
+          #### Terraform Plan \`${{ steps.plan.outcome }}`\'
+          <details><summary>Show Plan</summary>
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\
+          <details>`;
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
