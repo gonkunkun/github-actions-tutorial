@@ -43,13 +43,13 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = '#### Terraform Validation \`${{ steps.validate.outcome }}\`
-          #### Terraform Plan \`${{ steps.plan.outcome }}`\'
+          const output = `#### Terraform Validation \`${{ steps.validate.outcome }}\`
+          #### Terraform Plan \`${{ steps.plan.outcome }}\`
           <details><summary>Show Plan</summary>
           \`\`\`\n
           ${process.env.PLAN}
           \`\`\
-          <details>`;
+          </details>`;
           github.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
