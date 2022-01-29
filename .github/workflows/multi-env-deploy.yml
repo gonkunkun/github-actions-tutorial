@@ -1,0 +1,30 @@
+name: CICD to multi environments
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_test:
+   runs-on: ubuntu-latest
+   steps:
+    - run: echo building and testing!
+
+  deploy_stating:
+   needs: [build_test]
+   runs-on: ubuntu-latest
+   environment:
+    name: staging
+   steps:
+    - run: echo deploying to staging
+    - run: echo using my secret for staging - ${{ secrets.MY_SECRET }}
+
+  deploy_production:
+   needs: [deploy_stating]
+   runs-on: ubuntu-latest
+   environment:
+    name: production
+   steps:
+    - run: echo deploying to production!
+    - run: echo using my secret for staging - ${{ secrets.MY_SECRET }}
