@@ -5,8 +5,9 @@ terraform {
       version = "~> 3.27"
     }
   }
+  # bucketは先に作る必要あり
   backend "s3" {
-    bucket = "gha-terraform"
+    bucket = "gha-terraform-ysasakidev"
     key = "terraform.tfstate"
     region = "ap-northeast-1"
   }
@@ -19,4 +20,8 @@ resource "aws_instance" "app_server" {
   tags = {
     Name = "ExsampleEC2Instance"
   }
+}
+
+provider "aws" {
+  region = "ap-northeast-1"
 }
