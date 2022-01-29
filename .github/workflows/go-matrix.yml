@@ -1,0 +1,27 @@
+name: Go deploy
+on:
+  push:
+    branches:
+      - "matrix-test*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        go-version: [1.15, 1.16, 1.17]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: $({ matrix.os })
+    steps:
+    # リポジトリをチェックアウト
+    - uses: actions/checkout@v2
+    # Go環境のセットアップ
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+       go-version: $({ matrix.go-version })
+    # Goアプリケーションのビルド
+    - name: Build
+      run: go build -v ./...
+    # テストの実行
+    - name: Test
+      run: go test -v ./...
