@@ -1,0 +1,17 @@
+name: Go test
+
+on:
+  push:
+    branches:
+     - step1-test*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Write Data in a Job
+       run: echo "Hello" > ${GITHUB_WORKSPACE}/myoutput.txt
+     - name: Read Data in a Job
+       run: |
+         value=$(cat ${GITHUB_WORKSPACE}/myoutput.txt)
+         echo "Read Data: ${value}"
