@@ -1,0 +1,6 @@
+kubernetes:
+  - kubernetes/**/*
+cloudformations:
+  - cloudofrmation/*
+terraform:
+  - terraform/*
