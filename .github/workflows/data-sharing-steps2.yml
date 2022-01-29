@@ -1,0 +1,16 @@
+name: Go sharing step2 test
+
+on:
+  push:
+    branches:
+     - step2-test*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Set my number
+       run: echo '::set-output name=MY_NUMBER::12345'
+       id: set-number
+     - name: Get my number
+       run: echo "My number is $({ steps.set-number.outputs.MY_NUMBER })"
