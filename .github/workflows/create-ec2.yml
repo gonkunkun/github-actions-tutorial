@@ -24,6 +24,7 @@ jobs:
       run: terraform init
 
     - name: Terraform Validate
+      id: validate
       run: terraform validate -no-color
 
     - name: check val
@@ -33,6 +34,7 @@ jobs:
       run: echo ${{github.ref}}
 
     # - name: Terraform Plan
+    #   id: plan
     #   if: github.event_name == 'pull_request'
     #   run: terraform plan -no-color
 
@@ -58,6 +60,7 @@ jobs:
           })
 
     - name: Terraform Plan
+      id: plan
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color
 
