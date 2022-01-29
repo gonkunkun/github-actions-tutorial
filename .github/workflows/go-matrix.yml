@@ -1,4 +1,4 @@
-name: Go deploy
+name: Go matrix-test
 on:
   push:
     branches:
