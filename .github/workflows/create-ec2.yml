@@ -3,7 +3,7 @@ name: terraform-test
 on:
   push:
     branches:
-     - terraform-test*
+     - "main"
 
 jobs:
   terraform:
