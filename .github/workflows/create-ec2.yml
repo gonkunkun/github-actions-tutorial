@@ -24,6 +24,7 @@ jobs:
       run: terraform init
 
     - name: Terraform Validate
+      id: validate
       run: terraform validate -no-color
 
     - name: check val
@@ -33,6 +34,7 @@ jobs:
       run: echo ${{github.ref}}
 
     # - name: Terraform Plan
+    #   id: plan
     #   if: github.event_name == 'pull_request'
     #   run: terraform plan -no-color
 
@@ -43,25 +45,25 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = '#### Terraform Validation \`${{ steps.validate.outcome }}\`
-          #### Terraform Plan \`${{ steps.plan.outcome }}`\'
+          const output = `#### Terraform Validation \`${{ steps.validate.outcome }}\`
+          #### Terraform Plan \`${{ steps.plan.outcome }}\`
           <details><summary>Show Plan</summary>
           \`\`\`\n
           ${process.env.PLAN}
           \`\`\
-          <details>`;
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
+          </details>`;
+          github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
           })
 
     - name: Terraform Plan
+      id: plan
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
-# test

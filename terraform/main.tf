@@ -25,3 +25,4 @@ resource "aws_instance" "app_server" {
 provider "aws" {
   region = "ap-northeast-1"
 }
+# test
