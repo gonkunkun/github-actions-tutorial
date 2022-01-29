@@ -32,11 +32,11 @@ jobs:
     - name: check val
       run: echo ${{github.ref}}
 
-    - name: Terraform Plan
-      if: github.event_name == 'pull_request'
-      run: terraform plan -no-color
+    # - name: Terraform Plan
+    #   if: github.event_name == 'pull_request'
+    #   run: terraform plan -no-color
 
-    - uses: actions/github-script@v3
+    - uses: actions/github-script@v5
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
@@ -56,6 +56,11 @@ jobs:
             repo: context.repo.repo,
             body: output
           })
+
+    - name: Terraform Plan
+      if: github.event_name == 'pull_request'
+      run: terraform plan -no-color
+
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
